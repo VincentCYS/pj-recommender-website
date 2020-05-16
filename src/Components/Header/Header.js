@@ -28,7 +28,8 @@ import cookie from 'react-cookies'
 const mapStateToProps = state => {
   return {
     nrOfItemsInCard: state.cartItems.length,
-    loggedInUser: state.loggedInUser
+    loggedInUser: state.loggedInUser 
+
   };
 };
 
@@ -50,7 +51,8 @@ class ConnectedHeader extends Component {
 
   render() {
     let { anchorEl } = this.state;
-
+    console.log(this.props.loggedInUser);
+    
     return (
       <AppBar
         position="static"
@@ -60,10 +62,13 @@ class ConnectedHeader extends Component {
           <div className="left-part">
             <IconButton
               onClick={() => {
-                this.props.dispatch(toggleMenu());
+                this.props.history.push(
+                  '/'
+                );
               }}
             >
-              <MenuIcon size="medium" />
+            Cookipes
+              {/* <MenuIcon size="medium" /> */}
             </IconButton>
 
             Recipe
@@ -75,7 +80,7 @@ class ConnectedHeader extends Component {
               }}
               style={{ marginLeft: 30, width: 250, marginBottom: 15 }}
             />
-
+{/* 
             <Select
               style={{ maxWidth: 200, marginLeft: 20 }}
               value={this.state.categoryFilterValue}
@@ -89,7 +94,7 @@ class ConnectedHeader extends Component {
               }}
             >
               {categoryOptions}
-            </Select>
+            </Select> */}
 
             <Button
               style={{ marginLeft: 20 }}
@@ -97,9 +102,7 @@ class ConnectedHeader extends Component {
               color="primary"
               onClick={() => {
                 this.props.history.push(
-                  "/?category=" +
-                  this.state.categoryFilterValue +
-                  "&term=" +
+                  '/search?search=' +
                   this.state.searchTerm
                 );
               }}
@@ -107,28 +110,44 @@ class ConnectedHeader extends Component {
               {" "}
               Search
             </Button>
+
           </div>
-          <div className="right-part">
-            {!this.props.loggedInUser ? (
-              <Button
-                variant="outlined"
-                style={{ marginRight: 20 }}
-                color="primary"
-                onClick={() => {
-                  this.props.history.push("/login");
-                }}
-              >
-                Log in
-              </Button>
+          <div className="right-part" style = {{flexDirection : 'row'}}>
+            {!cookie.load("userId") ? (
+              <div style = {{display : 'flex'}}>
+                <Button
+                  variant="outlined"
+                  style={{ marginRight: 20, flex : 1 }}
+                  color="primary"
+                  onClick={() => {
+                    this.props.history.push("/login");
+                  }}
+                >
+                  Log in
+                </Button>
+                    <Button
+                    variant="outlined"
+                    style={{ marginRight: 20, flex : 1  }}
+                    color="primary"
+                    onClick={() => {
+                      this.props.history.push("/register_step1");
+                    }}
+                  >
+                    Register
+                  </Button>
+              </div>
             ) : (
+              <div style={{display : 'flex', color : 'black', flexDirection : 'row', alignItems :'center'}}>
+                {cookie.load('username')}
                 <Avatar
                   onClick={event => {
                     this.setState({ anchorEl: event.currentTarget });
                   }}
-                  style={{ backgroundColor: "#3f51b5", marginRight: 10 }}
+                  style={{ backgroundColor: "#3f51b5", marginRight: 10, marginLeft : 15 }}
                 >
                   <Person />
                 </Avatar>
+                </div>
               )}
             <IconButton
               aria-label="Cart"
@@ -137,7 +156,7 @@ class ConnectedHeader extends Component {
               }}
             >
               <Badge badgeContent={this.props.nrOfItemsInCard} color="primary">
-                <ShoppingCartIcon />
+                {/* <ShoppingCartIcon /> */}
               </Badge>
             </IconButton>
             <Menu
@@ -149,16 +168,9 @@ class ConnectedHeader extends Component {
             >
               <MenuItem
                 onClick={() => {
-                  this.setState({ anchorEl: null });
-                  this.props.history.push("/order");
-                }}
-              >
-                Checkout page
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
                   Auth.signout(() => {
                     cookie.remove('userId', { path: '/' })
+                    cookie.remove('username', { path: '/' })
 
                     this.props.dispatch(logout());
                     this.props.history.push("/");

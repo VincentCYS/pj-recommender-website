@@ -15,8 +15,6 @@ import Rating from 'react-star-rating-component';
 class ConnectedItem extends Component {
   
   render() {
-console.log('item', this.props.item);
-
     return (
       <Card
         style={{ width: 200, height: 270, margin: 10, display: "inline-block" }}
@@ -28,7 +26,7 @@ console.log('item', this.props.item);
         >
           <CardMedia
             style={{ height: 140 }}
-            // image={this.props.item.imageUrls[0]}
+            // image={this.props.item.imageUrl}
           />
           <CardContent style={{ height: 50 }}>
             <div

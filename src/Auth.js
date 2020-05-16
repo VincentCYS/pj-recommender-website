@@ -20,15 +20,25 @@ const Auth = {
         if (res.result) {
           userId = res.data.id;
           cookie.save('userId', res.data.id, { path: '/' })
+          cookie.save('username', name, { path: '/' })
+          setTimeout(
+            () =>
+              cb({
+                userId: userId
+              }),
+            100
+          );
+        } else {
+          setTimeout(
+            () =>
+              cb({
+                userId: null
+              }),
+            100
+          );
         }
 
-        setTimeout(
-          () =>
-            cb({
-              userId: userId
-            }),
-          100
-        );
+       
       })
       .catch(err => console.log(err));
   },

@@ -7,15 +7,22 @@ import Button from "@material-ui/core/Button";
 import { setLoggedInUser } from "../../Redux/Actions";
 import Avatar from '@material-ui/core/Avatar';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import cookie from 'react-cookies'
+import { Snackbar } from "@material-ui/core";
 
 
 class ConnectedLogin extends Component {
   state = {
     userName: "",
     pass: "",
-    redirectToReferrer: false
+    redirectToReferrer: false,
+    open : false,
+    message : ""
   };
+
+  handleClose = () => {
+    this.setState({ open: false });
+  };
+
   render() {
     const { from } = this.props.location.state || { from: { pathname: "/" } };
 
@@ -81,20 +88,27 @@ class ConnectedLogin extends Component {
               // Simulate authentication call
               Auth.authenticate(this.state.userName, this.state.pass, user => {
 
-                console.log('user: ', user);
+                console.log('user: ', user.userId);
                 
 
-                if (user == '') {
-                  this.setState({ wrongCred: true });
+                if (!user.userId) {
+                  this.setState({ 
+                    wrongCred: true,                    
+                    open : true,
+                    message : "wrong.username.or.password", 
+                  });
                   return;
+                } else {
+                  this.props.dispatch(setLoggedInUser({ name: user.name }));
+
+                  // cookie.save('userId', userId, { path: '/' })
+                  this.setState(() => ({
+                    // userId,
+
+                    redirectToReferrer: true
+                  }));
                 }
 
-                this.props.dispatch(setLoggedInUser({ name: user.name }));
-                // cookie.save('userId', userId, { path: '/' })
-                this.setState(() => ({
-                  // userId,
-                  redirectToReferrer: true
-                }));
               });
             }}
           >
@@ -104,6 +118,12 @@ class ConnectedLogin extends Component {
             <div style={{ color: "red" }}>Wrong username and/or password</div>
           )}
         </div>
+        <Snackbar
+          open={this.state.open}
+          autoHideDuration = {2000}
+          onClose={()=> this.handleClose()}
+          message= {this.state.message}
+        />
       </div>
     );
   }

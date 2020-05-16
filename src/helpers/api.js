@@ -4,7 +4,6 @@ var API = function() {}
 
 // declare API endpoint
 const EP = {
-    prod : "https://708pnhz5z2.execute-api.ap-southeast-1.amazonaws.com/Prod",
     local : "http://localhost:3000"
 }["local"];
 // set prototype

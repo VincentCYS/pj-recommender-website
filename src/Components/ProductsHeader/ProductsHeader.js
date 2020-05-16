@@ -39,14 +39,14 @@ class ProductsHeader extends Component {
         return (
             <div>
                 <div style={{ padding: 10, display: "flex", alignItems: "center" }}>
-                    <div style={{ flex: 1, fontSize: 24 }}>
-                        <div>{this.getTitle()}</div>
+                    <div style={{ flex: 1, fontSize: 30 }}>
+                        {/* <div>{'Home'}</div> */}
                         <div style={{ fontSize: 12, color: "gray", marginTop: 5 }}>
-                            Total results found: {totalItemsCount}
+                            {/* Total results found: {totalItemsCount} */}
                         </div>
                     </div>
 
-                    <FormControlLabel
+                    {/* <FormControlLabel
                         control={
                             <Checkbox
                                 color="primary"
@@ -59,8 +59,8 @@ class ProductsHeader extends Component {
                             />
                         }
                         label="Filter by price"
-                    />
-                    {usePriceFilter && (
+                    /> */}
+                    {/* {usePriceFilter && (
                         <Tooltip title="Click to change range" disableFocusListener>
                             <Button
                                 variant="outlined"
@@ -91,7 +91,7 @@ class ProductsHeader extends Component {
                             Sort by price: high to low
                         </MenuItem>
 
-                    </Select>
+                    </Select> */}
                 </div>
 
                 {/* This is dialog which opens up for setting price filter */}
